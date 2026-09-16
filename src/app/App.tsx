@@ -11,6 +11,9 @@ import { useAppStore } from '../stores/useAppStore';
 const Overview = lazy(() => import('../features/overview/Overview'));
 const Telemetry = lazy(() => import('../features/telemetry/Telemetry'));
 const Topology = lazy(() => import('../features/topology/Topology'));
+const Incidents = lazy(() => import('../features/incidents/Incidents'));
+const Deployments = lazy(() => import('../features/deployments/Deployments'));
+const Security = lazy(() => import('../features/security/Security'));
 
 function SectionFallback() {
   return (
@@ -52,7 +55,10 @@ export default function App() {
             {section === 'overview' && <Overview />}
             {section === 'telemetry' && <Telemetry />}
             {section === 'infrastructure' && <Topology />}
-            {!['overview', 'telemetry', 'infrastructure'].includes(section) && (
+            {section === 'incidents' && <Incidents />}
+            {section === 'deployments' && <Deployments />}
+            {section === 'security' && <Security />}
+            {!['overview', 'telemetry', 'infrastructure', 'incidents', 'deployments', 'security'].includes(section) && (
               <PlaceholderSection
                 label={meta?.label ?? section}
                 hint={meta?.hint ?? 'Operations module'}
