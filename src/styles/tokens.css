@@ -1,0 +1,82 @@
+/* AETHER design tokens — single source of truth for the visual system. */
+
+:root {
+  /* ---- surfaces ---- */
+  --bg-0: #06090f;
+  --bg-1: #0a0f18;
+  --bg-2: #0e1522;
+  --surface-1: #111a2a;
+  --surface-2: #16203299;
+  --surface-3: #1b2740;
+  --surface-solid-2: #141d31;
+  --surface-solid-3: #1a2540;
+
+  /* ---- text ---- */
+  --text-1: #eef4ff;
+  --text-2: #a9b8d0;
+  --text-3: #67748e;
+  --text-dim: #46536d;
+
+  /* ---- accents ---- */
+  --accent: #56c8ff;
+  --accent-2: #4f7cff;
+  --accent-violet: #9a7bff;
+  --accent-teal: #3ce6c3;
+  --accent-amber: #ffb454;
+  --accent-red: #ff5d6c;
+  --accent-green: #43e8a0;
+
+  /* ---- status ---- */
+  --ok: #43e8a0;
+  --warn: #ffb454;
+  --critical: #ff5d6c;
+  --info: #56c8ff;
+  --maintenance: #9a7bff;
+
+  /* ---- borders ---- */
+  --border-1: #1d2a44;
+  --border-2: #27375a;
+  --border-glow: #56c8ff33;
+
+  /* ---- spacing ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+
+  /* ---- radius ---- */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-full: 999px;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-med: 240ms;
+  --dur-slow: 480ms;
+
+  /* ---- shadows / glows ---- */
+  --shadow-panel: 0 12px 40px #020409cc;
+  --glow-accent: 0 0 18px #56c8ff55;
+  --glow-ok: 0 0 14px #43e8a066;
+
+  /* ---- layout ---- */
+  --sidebar-w: 248px;
+  --topbar-h: 60px;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-med: 0ms;
+    --dur-slow: 0ms;
+  }
+}
