@@ -374,3 +374,82 @@
 @media (max-width: 1024px) {
   .agent-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- global map ---------- */
+
+.geomap { display: grid; gap: var(--sp-4); }
+.map-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--sp-4); align-items: start; }
+.map-canvas-panel { overflow: hidden; }
+.map-svg { width: 100%; height: auto; display: block; }
+.map-dot { fill: #274067; opacity: 0.75; }
+.map-link { stroke: var(--accent); stroke-width: 1.4; opacity: 0.55; stroke-dasharray: 5 6; animation: map-dash 1.4s linear infinite; }
+@keyframes map-dash { to { stroke-dashoffset: -22; } }
+.map-node { cursor: pointer; outline: none; }
+.map-node .map-city { fill: var(--text-2); font-size: 10px; letter-spacing: 0.12em; font-family: var(--font-mono); }
+.map-node.is-active .map-city { fill: var(--text-1); }
+.map-node:focus-visible .map-core { stroke: var(--accent); stroke-width: 2; }
+.map-halo { stroke: #56c8ff44; stroke-width: 6; opacity: 0.5; }
+.map-node.is-active .map-halo { stroke: #56c8ff88; }
+.map-ring { stroke: var(--accent); stroke-width: 1.2; opacity: 0.7; animation: map-ring 2s ease-out infinite; }
+@keyframes map-ring { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.5); opacity: 0; } }
+.map-flows { display: flex; gap: var(--sp-4); flex-wrap: wrap; padding: var(--sp-3) var(--sp-5) var(--sp-4); font-size: 11.5px; color: var(--accent); }
+.health-inline { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.region-list { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; gap: 4px; }
+.region-row {
+  display: flex; align-items: center; gap: var(--sp-3); width: 100%;
+  background: transparent; border: 1px solid transparent; border-radius: var(--r-md);
+  padding: 8px 10px; cursor: pointer; color: var(--text-1); font-size: 13px;
+}
+.region-row:hover { background: #ffffff08; }
+.region-row.is-selected { background: #56c8ff12; border-color: #56c8ff33; }
+.region-city { flex: 1; text-align: left; }
+.region-lat { color: var(--text-3); font-size: 12px; }
+
+/* ---------- operations log ---------- */
+
+.opslog { display: grid; gap: var(--sp-4); }
+.ops-stream { list-style: none; margin: 0; padding: var(--sp-2); display: grid; gap: 2px; max-height: 560px; overflow-y: auto; }
+.ops-row {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: 7px 12px; border-radius: var(--r-md); font-size: 13px;
+  border-left: 2px solid transparent;
+}
+.ops-row:hover { background: #ffffff08; }
+.ops-at { color: var(--text-dim); font-size: 11.5px; flex: none; }
+.ops-msg { color: var(--text-2); }
+.ops-info { border-left-color: var(--info); }
+.ops-ok { border-left-color: var(--ok); }
+.ops-warn { border-left-color: var(--warn); }
+.ops-critical { border-left-color: var(--critical); }
+.ops-agent { border-left-color: var(--accent-violet); }
+.ops-security { border-left-color: var(--critical); }
+.ops-deploy { border-left-color: var(--accent-2); }
+.ops-row:first-child { animation: toast-in 0.3s var(--ease-out); }
+
+/* ---------- global inspector drawer ---------- */
+
+.inspector-scrim { position: fixed; inset: 0; z-index: 130; background: #02040999; }
+.inspector-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 140;
+  width: min(400px, 92vw);
+  background: #0c1220f7; backdrop-filter: blur(16px);
+  border-left: 1px solid var(--border-2);
+  box-shadow: var(--shadow-panel);
+  display: flex; flex-direction: column;
+}
+.drawer-head { padding: var(--sp-5) var(--sp-5) var(--sp-3); border-bottom: 1px solid var(--border-1); display: flex; justify-content: space-between; gap: var(--sp-3); }
+.drawer-head h3 { margin: 2px 0; font-size: 18px; }
+.drawer-head-right { display: grid; gap: var(--sp-2); justify-items: end; align-content: start; }
+.drawer-body { padding: var(--sp-4) var(--sp-5) var(--sp-5); overflow-y: auto; }
+
+/* ---------- konami celebration ---------- */
+
+.shell-cosmic .brand-core { background: var(--accent-violet); }
+.shell-cosmic .nav-item.is-active { border-color: #9a7bff66; }
+
+@media (max-width: 1280px) {
+  .map-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-link, .map-ring, .ops-row:first-child { animation: none; }
+}

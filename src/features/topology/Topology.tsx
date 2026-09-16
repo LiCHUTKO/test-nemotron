@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { LAYER_LABELS, TOPOLOGY_NODES } from '../../data/topology';
-import { HealthDot, Meter, Panel, SectionHeader, StatusBadge } from '../../components/ui/primitives';
+import { NodeDetails } from '../../components/inspector/details';
+import { HealthDot, Panel, SectionHeader, StatusBadge } from '../../components/ui/primitives';
 import { useAppStore } from '../../stores/useAppStore';
 import type { HealthState, TopologyNode } from '../../types';
 
@@ -169,37 +170,11 @@ export default function Topology() {
           action={selected ? <StatusBadge tone={toneFor(selected.health)}>{selected.health.toUpperCase()}</StatusBadge> : undefined}
         >
           {selected ? (
-            <div className="inspector">
-              <div className="insp-grid">
-                <div><p className="insp-k">Uptime</p><p className="mono insp-v">{selected.uptimePct.toFixed(3)}%</p></div>
-                <div><p className="insp-k">Latency</p><p className="mono insp-v">{selected.latencyMs} ms</p></div>
-                <div><p className="insp-k">Throughput</p><p className="mono insp-v">{selected.rps.toLocaleString()} rps</p></div>
-                <div><p className="insp-k">Version</p><p className="mono insp-v">{selected.version}</p></div>
-              </div>
-              <div className="insp-meter">
-                <div className="insp-meter-row"><span>CPU {selected.cpu}%</span><Meter value={selected.cpu} label={`${selected.label} CPU`} /></div>
-                <div className="insp-meter-row"><span>MEM {selected.memory}%</span><Meter value={selected.memory} label={`${selected.label} memory`} /></div>
-              </div>
-              <p className="insp-k">Depends on</p>
-              <div className="chip-row">
-                {selected.dependsOn.length === 0 && <span className="badge badge-muted">NONE — EDGE</span>}
-                {selected.dependsOn.map((d) => (
-                  <button key={d} type="button" className="chip-btn" onClick={() => setInspectorNodeId(d)}>
-                    {byId.get(d)?.label ?? d}
-                  </button>
-                ))}
-              </div>
-              <p className="insp-k">Operator notes</p>
-              <p className="insp-notes">{selected.notes}</p>
-              <div className="insp-events">
-                <p className="insp-k">Recent events</p>
-                <ul>
-                  <li><span className="mono">09:41:12</span> Health check passed (200, 41ms)</li>
-                  <li><span className="mono">09:36:03</span> Autoscale evaluated — no action</li>
-                  <li><span className="mono">09:21:47</span> Config hash verified {selected.version}</li>
-                </ul>
-              </div>
-            </div>
+            <NodeDetails
+              node={selected}
+              resolveDep={(id) => byId.get(id)?.label ?? id}
+              onSelectDep={(id) => setInspectorNodeId(id)}
+            />
           ) : (
             <div className="inspector">
               <div className="insp-grid">

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useRef } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import AppShell from '../components/layout/AppShell';
 import Atmosphere from '../components/layout/Atmosphere';
@@ -6,9 +6,11 @@ import BootScreen from '../components/layout/BootScreen';
 import ErrorBoundary from '../components/layout/ErrorBoundary';
 import PlaceholderSection from '../components/layout/PlaceholderSection';
 import CommandPalette from '../components/palette/CommandPalette';
+import GlobalInspector from '../components/inspector/GlobalInspector';
 import { SECTIONS } from './sections';
 import { useAppStore } from '../stores/useAppStore';
 import { useEventSimulation } from '../hooks/useEventSimulation';
+import { useKonamiCode } from '../hooks/useKonami';
 
 const Overview = lazy(() => import('../features/overview/Overview'));
 const Telemetry = lazy(() => import('../features/telemetry/Telemetry'));
@@ -18,6 +20,8 @@ const Deployments = lazy(() => import('../features/deployments/Deployments'));
 const Security = lazy(() => import('../features/security/Security'));
 const Agents = lazy(() => import('../features/agents/Agents'));
 const Terminal = lazy(() => import('../features/terminal/Terminal'));
+const GlobalMap = lazy(() => import('../features/geomap/GlobalMap'));
+const OpsLog = lazy(() => import('../features/opslog/OpsLog'));
 
 const BUILT: string[] = [
   'overview',
@@ -28,6 +32,8 @@ const BUILT: string[] = [
   'security',
   'agents',
   'terminal',
+  'map',
+  'opslog',
 ];
 
 function SectionFallback() {
@@ -43,6 +49,8 @@ export default function App() {
   const bootComplete = useAppStore((s) => s.bootComplete);
   const setPaletteOpen = useAppStore((s) => s.setPaletteOpen);
   const paletteOpen = useAppStore((s) => s.paletteOpen);
+  const pushToast = useAppStore((s) => s.pushToast);
+  const [cosmic, setCosmic] = useState(false);
   const searchRef = useRef<HTMLInputElement | null>(null);
 
   const onSearchFocus = useCallback((el: HTMLInputElement | null) => {
@@ -55,6 +63,13 @@ export default function App() {
   }, []);
 
   useEventSimulation(bootComplete);
+
+  const onKonami = useCallback(() => {
+    pushToast({ title: 'CHEAT CODE ACCEPTED', detail: 'Operator clearance elevated to COSMIC.', severity: 'info' });
+    setCosmic(true);
+    window.setTimeout(() => setCosmic(false), 8000);
+  }, [pushToast]);
+  useKonamiCode(onKonami);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -77,6 +92,7 @@ export default function App() {
       <Atmosphere />
       <AnimatePresence>{!bootComplete && <BootScreen />}</AnimatePresence>
       {bootComplete && (
+        <div className={cosmic ? 'shell-cosmic' : undefined}>
         <AppShell sectionKey={section} onSearchFocus={onSearchFocus}>
           <Suspense fallback={<SectionFallback />}>
             {section === 'overview' && <Overview />}
@@ -87,6 +103,8 @@ export default function App() {
             {section === 'security' && <Security />}
             {section === 'agents' && <Agents />}
             {section === 'terminal' && <Terminal />}
+            {section === 'map' && <GlobalMap />}
+            {section === 'opslog' && <OpsLog />}
             {!BUILT.includes(section) && (
               <PlaceholderSection
                 label={meta?.label ?? section}
@@ -95,7 +113,9 @@ export default function App() {
             )}
           </Suspense>
         </AppShell>
+        </div>
       )}
+      <GlobalInspector />
       {paletteOpen && <CommandPalette onFocusTerminal={onFocusTerminal} />}
     </ErrorBoundary>
   );
