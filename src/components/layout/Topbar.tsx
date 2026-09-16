@@ -84,7 +84,8 @@ export default function Topbar({ onSearchFocus }: { onSearchFocus: (el: HTMLInpu
               searchRef.current?.blur();
             }
           }}
-          placeholder="Search modules…  ( Ctrl+K )"
+          placeholder="Search modules…"
+          title="Search modules — press Ctrl+K for the full command palette"
           value={query}
           aria-label="Search modules"
           role="combobox"

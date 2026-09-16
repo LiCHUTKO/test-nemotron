@@ -90,8 +90,8 @@ export default function Sidebar() {
                       <>
                         <span className="nav-label">{s.label}</span>
                         {s.id === 'incidents' && (
-                          <span className="nav-pill" aria-label="3 open incidents">
-                            3
+                          <span className="nav-pill" aria-label="4 open incidents">
+                            4
                           </span>
                         )}
                         {active && <ChevronRight size={14} className="nav-caret" aria-hidden="true" />}

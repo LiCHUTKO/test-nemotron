@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ShieldAlert } from 'lucide-react';
 import { LIVE_TEMPLATES, SECURITY_EVENTS, SECURITY_STATS, THREAT_LEVEL } from '../../data/security';
-import { isoToUtcClock, timeAgo } from '../../lib/format';
-import { nextId } from '../../lib/format';
+import { isoToUtcClock, nextId, timeAgo } from '../../lib/format';
 import { Meter, Panel, SectionHeader, StatusBadge, TrendChip } from '../../components/ui/primitives';
 import { createRng } from '../../lib/simulation';
 import { useAppStore } from '../../stores/useAppStore';

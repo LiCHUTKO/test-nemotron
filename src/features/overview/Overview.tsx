@@ -120,7 +120,7 @@ export default function Overview() {
           </ul>
           <div className="health-foot">
             <ShieldCheck size={15} aria-hidden="true" />
-            <span>4 planes nominal · 2 degraded · 1 critical — see incident command.</span>
+            <span>3 planes nominal · 2 degraded · 1 critical — see incident command.</span>
           </div>
         </Panel>
       </div>
