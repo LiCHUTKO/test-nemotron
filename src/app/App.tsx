@@ -1,37 +1,47 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import AppShell from '../components/layout/AppShell';
+import Atmosphere from '../components/layout/Atmosphere';
+import BootScreen from '../components/layout/BootScreen';
+import ErrorBoundary from '../components/layout/ErrorBoundary';
+import PlaceholderSection from '../components/layout/PlaceholderSection';
+import { SECTIONS } from './sections';
+import { useAppStore } from '../stores/useAppStore';
 
-/**
- * Temporary scaffold shell — replaced by the full application shell in the
- * "application shell and design system" milestone.
- */
 export default function App() {
-  const [ready, setReady] = useState(false);
+  const section = useAppStore((s) => s.section);
+  const bootComplete = useAppStore((s) => s.bootComplete);
+  const searchRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    const id = window.setTimeout(() => setReady(true), 250);
-    return () => window.clearTimeout(id);
+  const onSearchFocus = useCallback((el: HTMLInputElement | null) => {
+    searchRef.current = el;
   }, []);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const meta = SECTIONS.find((s) => s.id === section);
+
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        display: 'grid',
-        placeItems: 'center',
-        background: 'var(--bg-0)',
-        color: 'var(--text-1)',
-        fontFamily: 'var(--font-sans)',
-      }}
-    >
-      <div style={{ textAlign: 'center' }}>
-        <p className="mono" style={{ letterSpacing: '0.4em', color: 'var(--accent)' }}>
-          AETHER
-        </p>
-        <h1 style={{ fontWeight: 650 }}>Global Operations Nexus</h1>
-        <p style={{ color: 'var(--text-2)' }}>
-          {ready ? 'Scaffold online — building systems…' : 'Initializing…'}
-        </p>
-      </div>
-    </main>
+    <ErrorBoundary>
+      <Atmosphere />
+      <AnimatePresence>{!bootComplete && <BootScreen />}</AnimatePresence>
+      {bootComplete && (
+        <AppShell sectionKey={section} onSearchFocus={onSearchFocus}>
+          <PlaceholderSection
+            label={meta?.label ?? section}
+            hint={meta?.hint ?? 'Operations module'}
+          />
+        </AppShell>
+      )}
+    </ErrorBoundary>
   );
 }
